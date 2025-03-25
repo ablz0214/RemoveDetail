@@ -7,7 +7,7 @@ import re
 """
 
 # 注册插件
-@register(name="RemoveDetail", description="专门移除消息中的所有<details>标签及其内容", version="0.8",
+@register(name="RemoveDetail", description="专门移除消息中的所有<details>标签及其内容", version="0.1",
           author="ablz0214")
 class RemoveDetailsPlugin(BasePlugin):
 
