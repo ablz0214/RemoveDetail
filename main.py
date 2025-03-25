@@ -3,7 +3,7 @@ from pkg.plugin.events import *  # 导入事件类
 import re
 
 # 注册插件
-@register(name="RemoveDetail", description="专门移除消息中的所有<details>标签及其内容", version="0.2",
+@register(name="RemoveDetail", description="专门移除消息中的所有<details>标签及其内容", version="0.3",
           author="ablz0214")
 class RemoveDetailsPlugin(BasePlugin):
 
@@ -34,21 +34,12 @@ class RemoveDetailsPlugin(BasePlugin):
         )
         
         # 3. 专门处理只有</details>结束标签的情况
-        # 3.1 移除单独的</details>标签
-        msg = re.sub(
-            r'</details>', 
-            '', 
-            msg, 
-            flags=re.IGNORECASE
-        )
-        
-        # 3.2 处理前面可能有内容的</details>标签
-        msg = re.sub(
-            r'[\s\S]*?</details>', 
-            '', 
-            msg, 
-            flags=re.IGNORECASE
-        )
+        # 3.1 分割消息，只保留</details>之后的部分
+        parts = re.split(r'</details>', msg, flags=re.IGNORECASE)
+        if len(parts) > 1:  # 如果找到</details>标签
+            msg = parts[-1]  # 只保留最后一部分
+        else:
+            msg = parts[0]  # 没有找到则保留全部
         
         # 优化换行和空格
         msg = re.sub(r'\n{3,}', '\n\n', msg)
